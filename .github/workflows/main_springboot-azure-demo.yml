@@ -1,62 +1,65 @@
-name: Build and deploy JAR app to Azure Web App - springboot-azure-demo  
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
 
-on:  
-  push:  
-    branches:  
-      - main  
-  workflow_dispatch:  
+name: Build and deploy JAR app to Azure Web App - springboot-azure-demo
 
-jobs:  
-  build:  
-    runs-on: windows-latest  
-    permissions:  
-      contents: read #This is required for actions/checkout  
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-    steps:  
-      - uses: actions/checkout@v4  
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
 
-      - name: Set up Java version  
-        uses: actions/setup-java@v4  
-        with:  
-          java-version: '21'  
-          distribution: 'microsoft'  
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Build with Maven  
-        run: mvn clean install  
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
 
-      - name: Upload artifact for deployment job  
-        uses: actions/upload-artifact@v4  
-        with:  
-          name: java-app  
-          path: '${{ github.workspace }}/target/*.jar'  
+      - name: Build with Maven
+        run: mvn clean install
 
-  deploy:  
-    runs-on: windows-latest  
-    needs: build  
-    environment:  
-      name: 'Production'  
-      url: 'https://tarunkotikumar.18' # Change this to your custom URL  
-    permissions:  
-      id-token: write #This is required for requesting the JWT  
-      contents: read #This is required for actions/checkout  
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/target/*.jar'
 
-    steps:  
-      - name: Download artifact from build job  
-        uses: actions/download-artifact@v4  
-        with:  
-          name: java-app  
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
       
-      - name: Login to Azure  
-        uses: azure/login@v2  
-        with:  
-          client-id: ${{ secrets.__clientidsecretname__ }}  
-          tenant-id: ${{ secrets.__tenantidsecretname__ }}  
-          subscription-id: ${{ secrets.__subscriptionidsecretname__ }}  
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_93E5083823064267805C826F9244982C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_16B31BA3D77549F7A822CA130638D147 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_442A220D0E5045AFB39AF39C54073658 }}
 
-      - name: Deploy to Azure Web App  
-        id: deploy-to-webapp  
-        uses: azure/webapps-deploy@v3  
-        with:  
-          app-name: 'springboot-azure-demo'  
-          slot-name: 'Production'  
-          package: '*.jar'  
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'springboot-azure-demo'
+          slot-name: 'Production'
+          package: '*.jar'

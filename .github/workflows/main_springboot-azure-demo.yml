@@ -35,7 +35,7 @@ jobs:
     needs: build  
     environment:  
       name: 'Production'  
-      url: 'https://your-custom-url.com' # Change this to your custom URL  
+      url: 'https://tarunkotikumar.18' # Change this to your custom URL  
     permissions:  
       id-token: write #This is required for requesting the JWT  
       contents: read #This is required for actions/checkout  

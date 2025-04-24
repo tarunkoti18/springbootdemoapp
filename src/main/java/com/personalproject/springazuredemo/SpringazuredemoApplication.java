@@ -11,8 +11,8 @@ public class SpringazuredemoApplication {
 
 	@GetMapping(value = "/message")
 	public String message()
-	{
-		return "Congrats ! you app developed sucessfully in Azure";
+	{s
+		return "Ni Tarun waste gaddu kadhu Chaitanya";
 	}
 
 	public static void main(String[] args) {

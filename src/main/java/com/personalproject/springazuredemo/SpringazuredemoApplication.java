@@ -11,7 +11,7 @@ public class SpringazuredemoApplication {
 
 	@GetMapping(value = "/message")
 	public String message()
-	{s
+	{
 		return "Ni Tarun waste gaddu kadhu Chaitanya";
 	}
 

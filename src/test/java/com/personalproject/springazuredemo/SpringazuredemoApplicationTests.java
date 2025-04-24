@@ -8,7 +8,7 @@ class SpringazuredemoApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println("Best for in the world")
+		System.out.println("Best for in the world");
 	}
 
 
